@@ -1,62 +1,75 @@
 ---
-layout: post-index
-title: Latest Posts
-description: "Describe this nonsense."
-tags: [Jekyll, theme, themes, responsive, blog, modern]
-image:
-  feature: abstract-1.jpg
-  credit: dargadgetz
-  creditlink: http://www.dargadgetz.com/ios-7-abstract-wallpaper-pack-for-iphone-5-and-ipod-touch-retina/
+layout: page
+title: The Bold Mole
+tagline:
 ---
 
 {% for post in paginator.posts %}
-<article class="hentry" itemprop="blogPost" itemscope itemtype="http://schema.org/BlogPosting">
-  <header>
-    <div class="entry-meta"><span class="entry-date date published updated"><time datetime="{{ post.date | date_to_xmlschema }}" itemprop="datePublished"><a href="{{ site.url }}{{ post.url }}">{{ post.date | date: "%B %d, %Y" }}</a></time></span><span class="author vcard" itemprop="author" itemscope itemtype="http://schema.org/Person"><span itemprop="name" class="fn"><a href="{{ site.url }}/about" title="About {{ site.owner.name }}" itemprop="url">{{ site.owner.name }}</a></span></span>{% if site.disqus_shortname and post.comments %}&nbsp; &bull; &nbsp;<span class="entry-comments"><a href="{{ site.url }}{{ post.url }}#disqus_thread">Comment</a></span>{% endif %}</div><!-- /.entry-meta -->
-    {% if post.link %}
-      <h1 class="entry-title" itemprop="name"><a href="{{ site.url }}{{ post.url }}" rel="bookmark" itemprop="url" title="{{ post.title }}"><i class="icon-double-angle-right"></i></a> <a href="{{ post.link }}">{{ post.title }}</a></h1>
-    {% else %}
-      <h1 class="entry-title" itemprop="name"><a href="{{ site.url }}{{ post.url }}" rel="bookmark" title="{{ post.title }}" itemprop="url">{{ post.title }}</a></h1>
-    {% endif %}
-  </header>
-  <div class="entry-content" itemprop="description">
-    {{ post.content }}
-  </div><!-- /.entry-content -->
-</article><!-- /.hentry -->
-{% endfor %}
 
-<div class="pagination">
+        <article class="home">
+
+            <span class="post-date">
+                {% assign d = post.date | date: "%d" | plus:'0' %}
+                {{ post.date | date: "%B" }}
+                {% case d %}
+                  {% when 1 or 21 or 31 %}{{ d }}st,
+                  {% when 2 or 22 %}{{ d }}nd,
+                  {% when 3 or 23 %}{{ d }}rd,
+                  {% else %}{{ d }}th,
+                {% endcase %}
+                {{ post.date | date: "%Y" }}
+            </span>
+
+            <h2>
+                <a href="{{ site.BASE_PATH }}{{ post.url }}">{{ post.title }}</a>
+            </h2>
+
+            <div>
+                {% if post.fullview %}
+                  {{ post.content }}
+                {% else %}
+                    {% if post.shortinfo %}
+                        {{ post.shortinfo }}
+                    {% elsif post.description %}
+                        {{ post.description }}
+                    {% else %}
+                        {{ post.excerpt }}
+                    {% endif %}
+                {% endif %}
+            </div>
+
+        </article>
+{% endfor %}
+<hr/>
+
+<ul class="pager"> 
+
   {% if paginator.previous_page %}
-    {% if paginator.previous_page == 1 %}
-      <a href="{{ site.url }}" class="btn">Previous</a>
-    {% else %}
-      <a href="{{ site.url }}/page{{ paginator.previous_page }}" class="btn">Previous</a>
-    {% endif %}
-  {% else %}
-    Previous
-  {% endif %}
-  <ul class="inline-list">
-    <li>
-      {% if paginator.page == 1 %}
-        <span class="current-page">1</span>
+    <li class="previous">
+      {% if paginator.previous_page == 1 %}
+        <a href="{{ site.BASE_PATH }}/">&larr; Newer</a>
       {% else %}
-        <a href="{{ site.url }}">1</a>
+        <a href="{{ site.BASE_PATH }}/page{{ paginator.previous_page }}">&larr; Newer</a>
       {% endif %}
     </li>
-    {% for count in (2..paginator.total_pages) %}
-      <li>
-        {% if count == paginator.page %}
-          <span class="current-page">{{ count }}</span>
-        {% else %}
-          <a href="{{ site.url }}/page{{ count }}">{{ count }}</a>
-        {% endif %}
-      </li>
-    {% endfor %}
-  </ul>
-  {% if paginator.next_page %}
-    <a href="{{ site.url }}/page{{ paginator.next_page }}" class="btn">Next</a>
   {% else %}
-    Next
+    <li class="previous disabled">
+      <a>&larr; Newer</a>
+    </li>
+  {% endif %}
+  
+  <li>
+          <span class="page_number">Page: {{ paginator.page }} of {{ paginator.total_pages }}</span>
+  </li>
+
+  {% if paginator.next_page %}
+    <li class="next">
+            <a href="{{ site.BASE_PATH }}/page{{ paginator.next_page }}">Older &rarr;</a>
+    </li>
+  {% else %}
+    <li class="next disabled">
+            <a>Older &rarr;</a>        
+    </li>
   {% endif %}
 
-</div>
+</ul>
