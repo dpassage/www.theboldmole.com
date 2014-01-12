@@ -1,0 +1,28 @@
+---
+layout: post
+title: 'Bayou Grand Prix: A Ruby on Rails project'
+date: '2012-05-09T23:06:00-07:00'
+tags:
+- rails
+- bgp
+tumblr_url: http://davidoncode.tumblr.com/post/22760411629/bayou-grand-prix-a-ruby-on-rails-project
+---
+<p>The <a href="http://rubyonrails.org">Rails</a> app I&#8217;ve been poking at for a while is pretty frivolous. A fried of mine started a regular playing night for Formula De, a car racing game based on Formula 1 (and shame on them for racing in Bahrain). He wanted it done as a league, complete with teams, driver names, scoring, etc. So in 2001, the <a href="http://www.bayougrandprix.com">Bayou Grand Prix</a> was born.</p>
+<p>I coded the first version of the web site - and as you can see, it&#8217;s pretty ugly. My minimalist HTML design skills aside, it&#8217;s coded in plain PHP on top of a SQL layer, and most of the logic is encoded in the SQL.  Given the scoring rules, and the need to support things like drivers racing for different teams in the same season, things got pretty ugly, with queries like this:</p>
+<pre>select d.name, t.color, SUM(sg.points), t.name
+from raceresults rr, races r, scoring sg, drivers d, 
+teams t, seasondrivers sd, schedule k where
+k.season = $season and
+k.race = r.id and 
+rr.race = r.id and
+rr.driver = d.id and
+rr.place = sg.place and
+rr.dnf = FALSE and
+sd.driver = d.id and
+sd.defaultteam = t.id and
+sd.season = k.season and
+sg.scheme = $schemeid
+group by d.name, t.color, t.name
+order by 3 desc, 1;</pre>
+<p>And the administrative interface is pretty bad as well. I quite often have to go in and frob the database with raw SQL to fix things when I screw up the data entry - meaning that effectively I&#8217;m the only one who can update the thing.</p>
+<p>So sometime in 2008 I started a project to write a new version in Rails. I&#8217;ve been poking at it from time to time ever since, but it still hasn&#8217;t reached feature parity with the current SQL site. Getting there, though.</p>

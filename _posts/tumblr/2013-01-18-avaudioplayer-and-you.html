@@ -1,0 +1,18 @@
+---
+layout: post
+title: AVAudioPlayer and you
+date: '2013-01-18T19:02:32-08:00'
+tags:
+- iOS
+- AVFoundation
+tumblr_url: http://davidoncode.tumblr.com/post/40878615031/avaudioplayer-and-you
+---
+<p>I&#8217;ve changed direction from Rails into iOS programming now&#8230; And ran into a big frustration point.</p>
+
+<p>The app I&#8217;m working on needs to record and play back audio. So into AVFoundation I go!</p>
+
+<p>The API annoys me. There are a few methods on <code>AVAudioPlayer</code> which can return false in case of error - but there&#8217;s no way to tell what the error is. So you have to jerk around experimenting for a while until you figure it out.</p>
+
+<p>Gee. Thanks, Apple.</p>
+
+<p>In my particular case, the <code>play</code> method was returning false; this seems to be because I had not set the audio session category correctly. I&#8217;ve yet to find somewhere in the Apple API documentation where it talks about the consequences of having your <code>AVAudioSession</code> set up incorrectly.</p>

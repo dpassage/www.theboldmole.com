@@ -1,0 +1,24 @@
+---
+layout: post
+title: Mac OS X users, upgrade your ruby!
+date: '2012-07-13T13:39:14-07:00'
+tags: 
+tumblr_url: http://davidoncode.tumblr.com/post/27133570826/mac-os-x-users-upgrade-your-ruby
+---
+<p>If you are running:</p>
+
+<ul><li>Mac OS X Lion 10.7.4</li>
+<li>Xcode 4.3.3 installed via the App Store</li>
+<li>ruby 1.9.3</li>
+</ul><p>&#8230;and you&#8217;ve removed previous versions of the Xcode environment, when you build gems with native extensions, you may see this:</p>
+
+<pre><code>/Users/dpassage/.rvm/rubies/ruby-1.9.3-p125/bin/ruby extconf.rb
+creating Makefile
+
+make
+compiling autolink.c
+make: /usr/bin/gcc-4.2: No such file or directory
+make: *** [autolink.o] Error 1
+</code></pre>
+
+<p>This means you need to upgade your ruby!  ruby 1.9.3-p125 contains a patch which hardcodes the gcc version used on OS X as gcc-4.2.  The newer version fixes this, and just uses /usr/bin/gcc.  As it should.</p>

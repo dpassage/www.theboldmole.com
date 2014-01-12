@@ -1,0 +1,39 @@
+---
+layout: post
+title: detecting iphone/ipad in rubymotion
+date: '2013-01-22T17:13:07-08:00'
+tags:
+- ios
+- rubymotion
+tumblr_url: http://davidoncode.tumblr.com/post/41223769840/detecting-iphone-ipad-in-rubymotion
+---
+<p>I just found this post in my drafts pile; might be a little old by now, but here goes.</p>
+
+<p>Most standard texts on iOS programming say to use the following code to detect whether you&#8217;re running on an iPhone or an iPad:</p>
+
+<p><pre>BOOL iPad = (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad);</pre></p>
+
+<p>Well, that won&#8217;t work in RubyMotion because <pre>UI_USER_INTERFACE_IDIOM</pre> is a C macro - meaning that it gets handled in the preprocessor and never gets turned into a symbol in the compiled libraries. That&#8217;s necessary for the RubyMotion build system to see it and create the proper Ruby objects to mirror it.</p>
+
+<p>But, if you dig down into the C header files deep enough, you find:</p>
+
+<p><pre>
+/* The UI_USER_INTERFACE_IDIOM() macro is provided for use when 
+   deploying to a version of the iOS less than 3.2. If the earliest version of 
+   iPhone/iOS that you will be deploying for is 3.2 or greater, you may use 
+   -[UIDevice userInterfaceIdiom] directly.
+ */
+
+define UI_USER_INTERFACE_IDIOM() ([[UIDevice currentDevice] respondsToSelector:@selector(userInterfaceIdiom)] ? [[UIDevice currentDevice] userInterfaceIdiom] : UIUserInterfaceIdiomPhone)</pre></p>
+
+<p>The macro&#8217;s only needed for iOS version 3.2 and earlier - and really, why bother?</p>
+
+<p>So, the Ruby code that works for this is:</p>
+
+<p><pre>
+if UIDevice.currentDevice.userInterfaceIdiom == UIUserInterfaceIdiomPad
+  storyboard = UIStoryboard.storyboardWithName "iPad-Storyboard", bundle: NSBundle.mainBundle
+else
+  storyboard = UIStoryboard.storyboardWithName "iPhone-Storyboard", bundle: NSBundle.mainBundle
+end
+</pre></p>

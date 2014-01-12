@@ -1,0 +1,49 @@
+---
+layout: post
+title: Grr ruby local variables shadow setters!
+date: '2012-07-18T14:28:13-07:00'
+tags: 
+tumblr_url: http://davidoncode.tumblr.com/post/27494789639/grr-ruby-local-variables-shadow-setters
+---
+<p>Time for a Ruby setter/getter pair!</p>
+
+<pre><code>def bar
+  @bar
+end
+
+def bar=(b)
+  @bar = b
+end
+</code></pre>
+
+<p>Seems workable enough, right?</p>
+
+<pre><code>1.9.3p194 :008 &gt; bar
+ =&gt; nil 
+1.9.3p194 :009 &gt; bar=100
+ =&gt; 100 
+1.9.3p194 :010 &gt; bar
+ =&gt; 100 
+1.9.3p194 :011 &gt; self.bar
+ =&gt; nil 
+</code></pre>
+
+<p>Uh. Huh?</p>
+
+<pre><code>1.9.3p194 :014 &gt; self.bar=200
+ =&gt; 200 
+1.9.3p194 :015 &gt; self.bar
+ =&gt; 200 
+1.9.3p194 :016 &gt; bar
+ =&gt; 100 
+</code></pre>
+
+<p>Wha?</p>
+
+<pre><code>1.9.3p194 :017 &gt; local_variables
+ =&gt; [:bar, :_] 
+</code></pre>
+
+<p>Oh. If you try to use the setter unadorned by an object - like, say, in another method in the same object - you end up making a local variable instead. I&#8217;m sure there&#8217;s a good reason for this, but I really cannot think of what it possibly could be right now. Sent me down a rathole for about 4 hours.</p>
+
+<p>This has the neat side effect of making it impossible for &#8220;foo=&#8221; style methods to be private. So if you want to make your setter private for some reason - like say the getter is read-only to other objects - you need to name it something else. Meh.</p>

@@ -1,0 +1,16 @@
+---
+layout: post
+title: Rails and Referential Integrity
+date: '2012-06-10T15:58:11-07:00'
+tags: 
+tumblr_url: http://davidoncode.tumblr.com/post/24832816364/rails-and-referential-integrity
+---
+<p>So in the course of working on that new Rails-based web site for our silly obsessive games nights, I ran into a problem:</p>
+<p>In an effort to maintain the data from the old, PHP-based app, I&#8217;m starting with the original database schema and using Rails migrations to bash it into shape, adapting it to the Rails conventions and the like.</p>
+<p>Anyway, things are going along well, but I ran into a problem: The database has no referential integrity.</p>
+<p>Here&#8217;s an example. I have a table of Drivers, a table of Races, and a &#8220;join&#8221; table called RaceEntries, where row has a pointer to a Driver and to a Race.  But there was nothing in the database, or in the code, which would prevent someone from deleting a Driver who was already entered into a Race. When that happens, you can get unexpected results when doing things like computing which driver won the most races.</p>
+<p>This wasn&#8217;t really a problem when I was the only one updating results on the site, and I could go in directly with the mysql command line and fix things. (OK, actually, that was a problem, but one I could live with.) But given that one of the goals of recoding the site in Rails is to allow others to enter results, I needed it to be more bulletproof. So, off to the interwebs!</p>
+<p>Turns out, there&#8217;s a big debate in and around the Rails community about the best layer at which to do this. Databases have support for this internally, by defining foreign keys in the database. So the smarts could easily go there.</p>
+<p>One problem: Rails isn&#8217;t designed that way. None other than David Heinemeier Hansson, the original founder of the project, is firmly <a href="http://david.heinemeierhansson.com/arc/2005_09.html">against it</a>. (The permalinks are broken, so you&#8217;ll have to scroll down to the entry entitled &#8220;Choose a single layer of cleverness&#8221;.)</p>
+<p>His reasoning is that these things are &#8220;business logic&#8221; - and your business logic should be in the application code, not the database. That&#8217;s all well and good - except it&#8217;s not that well documented. The current Rails Guide for 3.2 don&#8217;t really talk about it, and the section on the :dependent option is <a href="http://guides.rubyonrails.org/association_basics.html#belongs_to-dependent">incomplete</a>, not even mentioning the option to prevent deleting the object if it&#8217;s referenced from another object.</p>
+<p>I was finally able to find it in the API docs for <a href="http://api.rubyonrails.org/classes/ActiveRecord/Associations/ClassMethods.html#method-i-has_many">has_many</a>, but it wasn&#8217;t easy. So now, in good open source fashion, I have a new to-do to write an update for the guide explaining all this&#8230;</p>
