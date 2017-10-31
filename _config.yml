@@ -6,7 +6,7 @@ description: Where I write things about code.
 baseurl: ""
 url: ""
 twitter_username: dpaschich
-github_username:  dpassage
+github_username: dpassage
 
 # Build settings
 markdown: kramdown
