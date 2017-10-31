@@ -2,5 +2,5 @@
 source "https://rubygems.org"
 
 # gem "rails"
-gem 'github-pages', '29'
+gem 'github-pages', '167'
 gem 'rake'

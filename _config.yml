@@ -1,9 +1,11 @@
 # visit https://github.com/mojombo/jekyll/wiki/Configuration for more settings
 
+plugins: [jekyll-paginate]
+
 paginate: 10 # pagination based on number of posts
-paginate_path: "page:num"
+# paginate_path: "page:num"
 exclude: ["README.md", "Rakefile", "Gemfile", "Gemfile.lock"] # files to exclude
-highlighter: pygments
+# highlighter: pygments
 markdown: kramdown
 
 title: The Bold Mole
@@ -19,6 +21,8 @@ author:
 rss_path: feed.xml
 categories_path: categories.html
 tags_path: tags.html
+
+url: "http://www.theboldmole.com"
 
 # BASE_PATH: http://dpassage.github.io
 
