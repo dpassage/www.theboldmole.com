@@ -1,28 +1,38 @@
 # visit https://github.com/mojombo/jekyll/wiki/Configuration for more settings
 
-plugins: [jekyll-paginate]
-
-paginate: 10 # pagination based on number of posts
-# paginate_path: "page:num"
-exclude: ["README.md", "Rakefile", "Gemfile", "Gemfile.lock"] # files to exclude
-# highlighter: pygments
-markdown: kramdown
-
 title: The Bold Mole
+email: dpassage@balveda.com
 description: Where I write things about code.
-author:
-  name: David Paschich
-  email: dpassage@balveda.com
-  github: dpassage
-  twitter: dpaschich
-  bio: Where I write things about code.
-  # email_md5: 726351295ec82e145928582f595aa3aa
+baseurl: ""
+url: ""
+twitter_username: dpaschich
+github_username:  dpassage
 
-rss_path: feed.xml
-categories_path: categories.html
-tags_path: tags.html
+# Build settings
+markdown: kramdown
+theme: minima
+plugins:
+  - jekyll-feed
 
-url: "http://www.theboldmole.com"
+# plugins: [jekyll-paginate]
+
+# paginate: 10 # pagination based on number of posts
+# # paginate_path: "page:num"
+# exclude: ["README.md", "Rakefile", "Gemfile", "Gemfile.lock"] # files to exclude
+# # highlighter: pygments
+
+# author:
+#   name: David Paschich
+#   email: dpassage@balveda.com
+#   github: dpassage
+#   twitter: dpaschich
+#   bio: Where I write things about code.
+#   # email_md5: 726351295ec82e145928582f595aa3aa
+
+# rss_path: feed.xml
+# categories_path: categories.html
+# tags_path: tags.html
+
 
 # BASE_PATH: http://dpassage.github.io
 
